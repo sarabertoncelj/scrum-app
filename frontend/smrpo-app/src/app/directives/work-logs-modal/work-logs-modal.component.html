@@ -1,0 +1,26 @@
+<div>
+    <div class="modal-header ">
+        <h4 class="modal-title">Manage work logs for task: {{ task.description }}</h4>
+    </div>
+    <div class="modal-body overflow-auto" style="max-height: 270px;">
+        <work-log [readOnly]="!canEdit()" [task]="task" [lengthValue]="workLogsPerUser.length" [indexValue]="i" [workLog]="workLog" *ngFor="let workLog of workLogsPerUser, let i = index"></work-log>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="authenticationService.isScrumMaster()" class="float-left btn-group dropup">
+            <button class="btn btn-outline-dark dropdown-toggle" role="button" id="dropdownProjectUsers" data-toggle="dropdown">
+                <i class="fas fa-user-clock"></i>
+                {{ currentWorkLogUser ? currentWorkLogUser.username : 'Choose user' }}
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownProjectUsers">
+                <button *ngFor="let workLogsUser of workLogsUsers" class="dropdown-item" (click)="selectWorkLogsUsers(workLogsUser)">
+                    {{ workLogsUser.username }}
+                </button>
+                <button class="dropdown-item" disabled="true" *ngIf="workLogsUsers.length === 0">No work done</button>
+            </div>
+        </div>
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">
+            <i class="fas fa-times"></i>
+            Close
+        </button>
+    </div>
+</div>

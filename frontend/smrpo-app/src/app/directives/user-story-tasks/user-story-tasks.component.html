@@ -1,0 +1,97 @@
+<ul class="list-group">
+    <li class="list-group-item padding-0">
+        <div class="row">
+            <div class="col-3">
+                <a> Tasks </a> 
+            </div>
+            <div class="col-2">
+                <a> Status</a> 
+            </div>
+            <div class="col-2">
+                <a> Member </a>
+            </div>
+            <div class="col-2">
+                <a> Remaining (h)</a>
+            </div>
+            <div class="col-2">
+                <a> Actions</a> 
+            </div>
+            <div class="col-1">
+                
+            </div>
+        </div>
+    </li>
+    <li *ngFor="let userStoryTask of userStoryTasks" class="list-group-item padding-0" style="border-bottom: none;">
+        <div class="row">
+            <div class="col-3">
+                <a> {{ userStoryTask.description }}</a> 
+            </div>
+            <div class="col-2">
+                <div *ngIf="userStoryTask.status === UserStoryTaskStatus['Assigned'] && !userStoryTask.accepted" style="color: #D9831F;">
+                    Pending
+                </div>
+                <div *ngIf="userStoryTask.status === UserStoryTaskStatus['Assigned'] && userStoryTask.accepted" style="color: #D9831F;">
+                    Assigned
+                </div>
+                <div *ngIf="userStoryTask.status === UserStoryTaskStatus['Unassigned'] && !userStoryTask.accepted" style="color: #D9831F;">
+                    Unassigned
+                </div>
+                <div *ngIf="userStoryTask.status === UserStoryTaskStatus['Finished'] && userStoryTask.accepted" style="color: #469408;">
+                    Done
+                </div>
+                <div *ngIf="userStoryTask.status === UserStoryTaskStatus['In Progress'] && userStoryTask.accepted" style="color: #029ACF;">
+                    In progress
+                </div>
+            </div>
+            <div class="col-2">
+                <div *ngIf="userStoryTask.user">
+                    <div> {{ userStoryTask.user.username }}</div> 
+                </div>
+            </div>
+            <div class="col-2">
+                <a> {{ userStoryTask.remainingTime | number:'1.0-1'}} </a>
+            </div>
+            <div class="col-3">
+                <span class="float-right pt-1">
+                    <a [routerLink]="" (click)="openWorkLogsDialog(userStoryTask)"><i class="fas fa-clock mr-1" style></i></a>
+                    <a [routerLink]="" (click)="editTask(userStoryTask)"><i class="fas fa-edit mr-1"></i></a>
+                    <a [routerLink]="" (click)="deleteTask(userStoryTask)"><i class="fas fa-trash mr-1"></i></a>
+                </span>
+                <div *ngIf="userStoryTask.status === UserStoryTaskStatus['Assigned'] && isThisUser(userStoryTask.user) && !userStoryTask.accepted">
+                    <a [routerLink]="" (click)="acceptTask(userStoryTask)" >Accept</a>
+                    /
+                    <a [routerLink]="" (click)="declineTask(userStoryTask)">Decline</a>
+                </div>
+                <div *ngIf="userStoryTask.status === UserStoryTaskStatus['Unassigned'] && !userStoryTask.accepted">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownProjectUsers" data-toggle="dropdown">Assign to</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownProjectUsers">
+                        <button *ngFor="let projectUser of projectUsers" class="dropdown-item" (click)="assignTo(userStoryTask, projectUser)">{{ projectUser.username }}</button>
+                        <button disabled="true" *ngIf="projectUsers && projectUsers.length === 0" class="dropdown-item">No developers</button>
+                    </div>
+                </div>
+                <div *ngIf="userStoryTask.status === UserStoryTaskStatus['Assigned']">
+                    <span *ngIf="isThisUser(userStoryTask.user) && userStoryTask.accepted">
+                        <a  [routerLink]="" (click)="startTask(userStoryTask)">Start</a>
+                        /
+                    </span>
+                    <a *ngIf="(isThisUser(userStoryTask.user) && userStoryTask.accepted) || (authenticationService.isScrumMaster() && userStoryTask.accepted)" [routerLink]="" (click)="declineTask(userStoryTask)">Unassign</a>
+                    <span *ngIf="isThisUser(userStoryTask.user) && userStoryTask.accepted">
+                        /
+                        <a  [routerLink]="" (click)="endTask(userStoryTask)">End</a>
+                    </span>
+                </div>
+                <div *ngIf="userStoryTask.status === UserStoryTaskStatus['In Progress'] && isThisUser(userStoryTask.user) && userStoryTask.accepted">
+                    <a [routerLink]="" (click)="stopTask(userStoryTask)">Stop</a>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="userStoryTask.status === UserStoryTaskStatus['In Progress'] && isThisUser(userStoryTask.user) && userStoryTask.accepted">
+            <active-task (stopTaskEvent)="handleTaskStop($event)" [task]="userStoryTask"></active-task>
+        </div>
+    </li>
+    <button *ngIf="userStory.status !== UserStoryStatus.Finished" (click)="openAddUserStoryTaskDialog()" class="btn btn-sm btn-outline-dark" type="button" style="box-shadow: none;">
+        <i class="fas fa-plus"></i>
+        Add task
+    </button>
+</ul>
+

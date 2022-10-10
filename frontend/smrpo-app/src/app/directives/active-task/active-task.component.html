@@ -1,0 +1,9 @@
+<div class="fixed-bottom">
+    <div class="card border-info border-bottom-0 rounded-0 border-right-0 border-left-0">
+        <div class="card-header">
+            Currently working on task: {{ task.description }}
+            <span class="float-right">{{ time }}</span>
+            <a class="float-right mr-2" [routerLink]="" (click)="stopTask()">Stop</a>
+        </div>
+    </div>
+</div>

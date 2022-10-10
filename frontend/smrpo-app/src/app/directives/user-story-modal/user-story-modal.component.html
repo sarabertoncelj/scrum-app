@@ -1,0 +1,70 @@
+<form [formGroup]="userStoryForm" (ngSubmit)="onSubmit()">
+    <div class="modal-header ">
+        <h4 *ngIf="!userStory"class="modal-title">Add new user story</h4>
+        <h4 *ngIf="userStory" class="modal-title">Modify user story {{ userStory.name }}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="col-form-label">Name</label>
+            <input type="text" formControlName="name" class="form-control" maxlength="500" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                <div *ngIf="submitted && f.name.errors.required">Name is required</div>
+            </div>
+
+            <label class="col-form-label">Description</label>
+            <textarea class="form-control" formControlName="description" maxlength="1000" rows="3"></textarea>
+
+            <label class="col-form-label">Acceptance tests</label>
+            <div class="input-group">
+                <input [(ngModel)]="newAcceptanceTest" [ngModelOptions]="{standalone: true}" type="text" class="form-control">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-dark" (click)="addAcceptanceTest()" type="button"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+            <div *ngIf="submitted && f.acceptanceTests.errors" class="invalid-feedback d-block">
+                <div *ngIf="submitted && f.acceptanceTests.errors.required">At least one acceptance test is required</div>
+            </div>
+            <div formArrayName="acceptanceTests" *ngFor="let acceptanceTest of userStoryForm.get('acceptanceTests')['controls']; let i = index;" class="input-group">
+                <input type="text" [formControlName]="i" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.acceptanceTests['controls'][i].errors }">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-dark" (click)="removeAcceptanceTest(i)" type="button"><i class="fas fa-minus"></i></button>
+                </div>
+                <div *ngIf="submitted && f.acceptanceTests['controls'][i].errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.acceptanceTests['controls'][i].errors.required">Acceptance test cannot be empty</div>
+                </div>
+            </div>
+
+            <label class="col-form-label">Priority</label>
+            <select formControlName="priority" class="custom-select">
+                <option value="0">{{ UserStoryPriority[0] }}</option>
+                <option value="1">{{ UserStoryPriority[1] }}</option>
+                <option value="2">{{ UserStoryPriority[2] }}</option>
+                <option value="3">{{ UserStoryPriority[3] }}</option>
+            </select>
+
+            <label class="col-form-label">Business value</label>
+            <input type="number" formControlName="businessValue" min="0" max="10" step="1" data-decimals="0" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.businessValue.errors }">
+            <div *ngIf="submitted && f.businessValue.errors" class="invalid-feedback">
+                <div *ngIf="submitted && f.businessValue.errors.required">Business value is required</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button *ngIf="!userStory" class="btn btn-outline-dark" type="submit">
+            <i *ngIf="!loading" class="fas fa-plus"></i>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Add
+        </button>
+        <button *ngIf="userStory" class="btn btn-outline-dark" type="submit">
+            <i *ngIf="!loading" class="fas fa-save"></i>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Save
+        </button>
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">
+            <i class="fas fa-times"></i>
+            Cancel
+        </button>
+    </div>
+</form>
+
+

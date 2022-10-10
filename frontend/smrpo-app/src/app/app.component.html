@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark justify-content-end">
+    <div class="container">
+        <a routerLink="/projects" class="navbar-brand">{{title}}</a>
+
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown" href="#" *ngIf="isLoggedIn()" id="dropdownUser" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-outline-light dropdown-toggle">
+                    {{ currentUser.username }} {{ authenticationService.isAdministrator() ? '(Admin)': '' }}
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownUser">
+                    <button *ngIf="authenticationService.isAdministrator()" class="dropdown-item" (click)="goToRegistration()">Users</button>
+                    <button class="dropdown-item" (click)="goToProjects()">Projects</button>
+                    <button class="dropdown-item pt-2 mt-2 border-top" disabled>
+                        Last login
+                        <br>
+                        <span *ngIf="lastLogin">{{ lastLogin | date:'medium' }}</span>
+                        <span *ngIf="!lastLogin">Never</span>
+                    </button>
+                    <button class="dropdown-item" (click)="logout()">Log out</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- main app container -->
+<div class="container pt-5">
+    <alert></alert>
+    <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,27 @@
+<project-navigation (projectEvent)="setProject($event)" (sprintsEvent)="setSprints($event)"></project-navigation>
+<div *ngIf="project" class="container">
+    <div class="row justify-content-center">
+        <div class="col-6 padding-0 pr-2" *ngIf="project && sprints">
+            <div class="card-header text-left mb-2" style="border-radius: 0px;">
+                <button *ngIf="authenticationService.isScrumMaster() || authenticationService.isProductOwner()" (click)="openAddUserStoryDialog()" style="margin-top: 1.5px;" class="btn btn-outline-dark btn-sm float-right">
+                    <i class="fas fa-plus"></i>
+                    Add
+                </button>
+                <p style="margin-top: 5px; margin-bottom: 5px;">Unfinished stories</p>
+            </div>
+            <user-story id="unfinishedStoriesId" [project]="project" [sprints]="sprints" (userStoryAccepted)="moveUserStory($event)" [(userStory)]="unfinishedUserStories[i]" *ngFor="let unfinishedUserStory of unfinishedUserStories; let i = index"></user-story>
+            <div *ngIf="unfinishedUserStories && unfinishedUserStories.length === 0" class="text-muted">
+                No unfinished user stories
+            </div>
+        </div>
+        <div class="col-6 padding-0 pl-2" *ngIf="project && sprints">
+            <div class="card-header text-left mb-2" style="border-radius: 0px;">
+                <p style="margin-top: 5px; margin-bottom: 5px;">Finished stories</p>
+            </div>
+            <user-story [project]="project" [sprints]="sprints" [(userStory)]="finishedUserStories[i]" *ngFor="let finishedUserStory of finishedUserStories; let i = index"></user-story>
+            <div *ngIf="finishedUserStories && finishedUserStories.length === 0" class="text-muted">
+                No finished user stories
+            </div>
+        </div>
+      </div> 
+</div>

@@ -1,0 +1,25 @@
+<div *ngIf="workLog" class="mb-3">
+    <form [formGroup]="workLogForm" (ngSubmit)="onSubmit()" class="form-group mb-0">
+        <div class="row">
+            <div class="col-4">
+                <label class="col-form-label">{{ workLog.day | date}}</label>
+                <button *ngIf="!readOnly" ngDisabled="loading" type="submit" class="btn btn-outline-dark">
+                    <i *ngIf="!loading" class="fas fa-save"></i>
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Save
+                </button>
+            </div>
+            <div class="col-4">
+                <label class="col-form-label">Remaining (h)</label>
+                <input id="hoursRemaining_{{ indexValue }}" type="number" min="0" max="500" step="0.1" data-decimals="1" formControlName="hoursRemaining" class="form-control"/>
+            </div>
+            <div class="col-4">
+                <label class="col-form-label">Worked (h)</label>
+                <input id="hoursWorked_{{ indexValue }}" type="number" min="0" max="500" step="0.1" data-decimals="1" formControlName="hoursWorked" class="form-control"/>
+            </div>
+        </div>
+    </form>
+    <div *ngIf="indexValue < lengthValue - 1">
+        <hr class="mb-0 mt-3"/>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div *ngIf="projectPost" class="card mb-3 border-info">
+    <div class="card-header">
+        <div class="float-right">
+            Posted by:
+            <span class="badge badge-dark">{{ projectPost.user.username }}</span>
+        </div>
+        <h5 class="card-title mb-0">{{ projectPost.title }}</h5>
+    </div>
+    <div class="card-body">
+        <pre>{{ projectPost.description }}</pre>
+    </div>
+    <div class="card-footer text-muted">
+        {{ projectPost.dateModified | date}}
+    </div>
+</div>

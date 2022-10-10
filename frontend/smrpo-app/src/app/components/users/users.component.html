@@ -1,0 +1,19 @@
+<div class="container">
+    <div>
+      <button *ngIf="authenticationService.isAdministrator()" class="btn btn-outline-dark float-right" (click)="openAddUserDialog()">
+        <i class="fas fa-plus"></i>
+        Add
+      </button> 
+      <h2>Users</h2>
+    </div>
+    <table class="table table-hover text-center">
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td><a>{{ user.username }}</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="users && users.length === 0" class="text-muted">
+      No users
+    </div>
+  </div>

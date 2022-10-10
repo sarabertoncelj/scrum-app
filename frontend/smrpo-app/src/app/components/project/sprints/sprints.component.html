@@ -1,0 +1,19 @@
+<project-navigation (projectEvent)="setProject($event)" (sprintsEvent)="setSprints($event)"></project-navigation>
+<div *ngIf="project" class="container">
+    <div class="row justify-content-center mb-2">
+        <div class="col-12 padding-0">
+            <button *ngIf="authenticationService.isScrumMaster()" (click)="openAddSprintDialog()" class="btn btn-outline-dark btn-sm mt-2">
+                <i class="fas fa-plus"></i>
+                Add
+            </button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 padding-0">
+            <sprint [project]="project" [sprints]=sprints [sprint]="sprint" (sprintRemove)="sprintRemove($event)" (sprintUpdated)="sprintUpdated($event)" *ngFor="let sprint of sprints"></sprint>
+            <div *ngIf="sprints && sprints.length === 0" class="text-muted">
+                No sprints
+            </div>
+        </div>
+    </div>
+</div>

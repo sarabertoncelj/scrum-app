@@ -1,0 +1,36 @@
+<div *ngIf="sprint" class="card mb-3" [ngClass]="{'border-success': sprint.active, 'border-secondary': !sprint.active}">
+    <div class="card-header">
+        <div class="float-right">
+            Velocity:
+            <span class="badge badge-dark">{{ sprint.velocity }}</span>
+            <span class="ml-1" ngbTooltip="1pt ≈ 6 working hours" placement="bottom">pt</span>
+        </div>
+        <h5 class="card-title mb-0">{{sprint.start | date }}&nbsp;-&nbsp;{{sprint.end | date }}
+            <span *ngIf="sprint.active" class="spinner-grow spinner-grow-sm" role="status"></span>
+        </h5>
+    </div>
+    <div class="card-body">
+        <user-story [project]="project" [sprints]="sprints" (userStoryRejected)="removeUserStory($event)" [(userStory)]="sprint.userStories[i]" *ngFor="let userStory of sprint.userStories; let i = index"></user-story>
+        <div *ngIf="sprint.userStories.length === 0" class="text-muted">
+            No user stories in this sprint
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="float-right dropup">
+            <button class="btn btn-outline-dark btn-sm" role="button" type="button" data-toggle="dropdown">
+                <i class="fas fa-angle-up"></i>
+                Actions
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownActions">
+                <button *ngIf="!sprint.active" class="dropdown-item" (click)="delete()">
+                    <i class="fas fa-edit"></i>
+                    Delete
+                </button>
+                <button class="dropdown-item" (click)="edit()">
+                    <i class="fas fa-trash mr-1"></i>
+                    Edit
+                </button>
+            </div>  
+        </div>
+    </div>
+</div>

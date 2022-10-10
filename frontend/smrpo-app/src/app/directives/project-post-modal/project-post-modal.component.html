@@ -1,0 +1,31 @@
+<form [formGroup]="projectPostForm" (ngSubmit)="onSubmit()">
+    <div class="modal-header ">
+        <h4 class="modal-title">Add new post</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="col-form-label">Title</label>
+            <input type="text" formControlName="title" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.title.errors }">
+            <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                <div *ngIf="submitted && f.title.errors.required">Title is required</div>
+            </div>
+
+            <label class="col-form-label">Content</label>
+            <textarea class="form-control" formControlName="description" maxlength="1000" rows="3" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"></textarea>
+            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                <div *ngIf="f.description.errors.required">Content is required</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-outline-dark" type="submit">
+            <i *ngIf="!loading" class="fas fa-plus"></i>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Add
+        </button>
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">
+            <i class="fas fa-times"></i>
+            Cancel
+        </button>
+    </div>
+</form>

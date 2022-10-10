@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+@import '~@fortawesome/fontawesome-free/css/all.min.css';
+@import '~bootswatch/dist/simplex/bootstrap.min.css';
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+.padding-0 {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.cdk-overlay-container {
+  z-index: 99999 !important;
+}
+
+.form-control[readonly] {
+  cursor:pointer;
+  background-color: #FFFFFF;
+}

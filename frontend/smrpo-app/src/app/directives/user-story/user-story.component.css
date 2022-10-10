@@ -1,0 +1,39 @@
+ol {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul.list-group:after {
+    clear: both;
+    display: block;
+    content: "";
+  }
+  
+.list-group-item {
+    margin-top: 10px;
+    border-top: 10px !important;
+}
+
+.estimation-input {
+    text-align: center;
+    height: 20px;
+    width: 40px;
+    font-size: 85%;
+    font-weight: 700;
+}
+
+::ng-deep .tooltip-inner {
+    max-width: 1000px;
+}
+
+.isActive {
+    background-color: lightgreen;
+}
+
+pre {
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}

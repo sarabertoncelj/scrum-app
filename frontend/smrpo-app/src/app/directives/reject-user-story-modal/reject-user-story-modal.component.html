@@ -1,0 +1,25 @@
+<form [formGroup]="rejectForm" (ngSubmit)="onSubmit()">
+    <div class="modal-header ">
+        <h4 class="modal-title">Decline user story: {{ userStory.name }}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="col-form-label">Reason</label>
+            <textarea class="form-control" formControlName="comment" maxlength="1000" rows="3" [ngClass]="{ 'is-invalid': submitted && f.comment.errors }"></textarea>
+            <div *ngIf="submitted && f.comment.errors" class="invalid-feedback">
+                <div *ngIf="submitted && f.comment.errors.required">Reason is required</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-outline-dark" type="submit">
+            <i *ngIf="!loading" class="fas fa-plus"></i>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Reject
+        </button>
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">
+            <i class="fas fa-times"></i>
+            Cancel
+        </button>
+    </div>
+</form>

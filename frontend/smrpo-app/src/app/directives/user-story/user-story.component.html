@@ -1,0 +1,108 @@
+<ng-template #tipUserStoryTimesContent>
+    <a *ngFor="let userStoryTime of userStoryTimes" class="dropdown-item">{{userStoryTime.sprint.start | date}}&nbsp;-&nbsp;{{userStoryTime.sprint.end | date}},&nbsp;Estimation:&nbsp;{{ userStoryTime.estimation }}pt,&nbsp;Velocity:&nbsp;{{ userStoryTime.sprint.velocity }}pt</a>
+</ng-template>
+<ng-template #tipUserStoryTimeContent>
+    <a class="dropdown-item"> {{userStory.sprint.start | date}}&nbsp;-&nbsp;{{userStory.sprint.end | date}}</a>
+</ng-template>
+<div *ngIf="userStory && userStoryTasks" class="card mb-3" [ngClass]="{'border-success': userStory.sprint && userStory.sprint.active, 'border-secondary': !userStory.sprint}">
+    <div class="card-header">
+        <div *ngIf="activeUserStoryTime" class="float-right">
+			<div *ngIf="!authenticationService.isScrumMaster() || userStory.sprint || userStory.status == UserStoryStatus.Finished">
+				Estimation:
+                <span #estimationField placement="bottom" [ngbTooltip]="tipUserStoryTimesContent"  class="badge badge-dark">{{ activeUserStoryTime.estimation }}</span>
+                <span class="ml-1" ngbTooltip="1pt ≈ 6 working hours" placement="bottom">pt</span>
+			</div>
+			<div *ngIf="authenticationService.isScrumMaster() && !userStory.sprint && userStory.status == UserStoryStatus.Unfinished">
+				<form [formGroup]="userStoryTimeForm" class="form-inline mb-0">
+					<label class="mr-1">Estimation: </label>
+					<div class="form-group">
+                        <input #estimationField placement="bottom" [ngbTooltip]="tipUserStoryTimesContent" type="text" formControlName="estimation" value="" class="form-control estimation-input" ngPattern="/[0-9]*/" maxlength="2" (blur)="onBlur()"/>
+                        <span class="ml-1">h</span>
+                    </div>
+				</form>
+            </div>
+        </div>
+        <div>
+            <h5 class="card-title mb-0">
+                {{ userStory.name }}
+                <i *ngIf="userStory.comment" placement="right" [ngbTooltip]="userStory.comment" class="far fa-comment-alt fa-sm"></i>
+            </h5>
+        </div>
+    </div>
+    <div class="card-body">
+        <pre class="card-subtitle mb-2 text-muted">{{ userStory.description }}</pre>
+        <ol class="pt-1 mb-0">
+            <li *ngFor="let acceptanceTest of userStory.acceptanceTests">
+                <p class="card-text">{{ acceptanceTest }}</p>
+            </li>
+        </ol>        
+        <div *ngIf="userStory.sprint && userStoryTasksShow" class="mt-2">
+            <a class="btn btn-outline-dark dropdown-toggle" data-toggle="collapse" href="#collapse{{ userStory.id }}" active="true" role="button" style="width: 100%; box-shadow: none;"></a>
+            <div class="collapse" [ngClass]="{'show': userStoryTasksExpanded}" id="collapse{{ userStory.id }}">
+                <user-story-tasks [userStory]="userStory" [project]="project" [(userStoryTasks)]="userStoryTasks" ></user-story-tasks>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-4">
+                <div>Priority: <span class="badge" [ngClass]="{
+                    'badge-success': UserStoryPriority['Must have'] === userStory.priority,
+                    'badge-warning': UserStoryPriority['Could have'] === userStory.priority,
+                    'badge-info': UserStoryPriority['Should have'] === userStory.priority,
+                    'badge-primary': UserStoryPriority['Won\'t have this time'] === userStory.priority}">
+                        {{ UserStoryPriority[userStory.priority] }}</span></div>
+            </div>
+            <div class="col-4">
+                <h6>Business value: <span class="badge badge-dark">{{ userStory.businessValue }}</span></h6>
+            </div>
+            <div class="col-4">
+                <div *ngIf="userStory.status == UserStoryStatus.Unfinished && !userStory.sprint" class="float-right dropup" id="dropdownActions">
+                        <button class="btn btn-outline-dark btn-sm" role="button" type="button" data-toggle="dropdown">
+                            <i class="fas fa-angle-up"></i>
+                            Actions
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownActions">
+                            <button class="dropdown-item" (click)="delete()">
+                                <i class="fas fa-edit"></i>
+                                Delete
+                            </button>
+                            <button class="dropdown-item" (click)="edit()">
+                                <i class="fas fa-trash mr-1"></i>
+                                Edit
+                            </button>
+                            <div *ngIf="authenticationService.isScrumMaster() && activeSprint" class="dropdown-divider"></div>
+                            <button *ngIf="authenticationService.isScrumMaster() && activeSprint" (click)="addToActiveSprint()" type="button" role="button" class="dropdown-item" data-toggle="dropdown" id="dropdownSprints">
+                                <i class="fas fa-archive mr-1"></i>
+                                Add to active sprint
+                            </button>
+                        </div>                
+                </div>
+                <div *ngIf="userStory.status == UserStoryStatus.Finished" class="float-right" placement="bottom" [ngbTooltip]="tipUserStoryTimeContent">
+                    <i class="fas fa-check"></i>
+                    Finished
+                </div>
+                <div *ngIf="userStory.sprint && userStory.sprint.active && !allTasksDone()" class="float-right" placement="bottom" [ngbTooltip]="tipUserStoryTimeContent">
+                    <div class="spinner-grow spinner-grow-sm" role="status"></div>
+                    Active
+                </div>
+                <div *ngIf="userStory.status == UserStoryStatus.Unfinished && userStory.sprint && allTasksDone() && !authenticationService.isProductOwner()" class="float-right">
+                    <i class="fas fa-vote-yea"></i>
+                    Waiting for approval
+                </div>
+                <div *ngIf="userStory.status == UserStoryStatus.Unfinished && userStory.sprint && (allTasksDone() || !userStory.sprint.active) && authenticationService.isProductOwner()" class="float-right">
+                    <div *ngIf="userStoryTasks.length > 0 && allTasksDone()">
+                        <i class="fas fa-vote-yea mr-1"></i>
+                        <a [routerLink]="" (click)="accept()">Accept</a>
+                        /
+                        <a [routerLink]="" (click)="reject()">Reject</a>
+                    </div>
+                    <div *ngIf="userStoryTasks.length === 0 || !allTasksDone()">
+                        <i class="fas fa-vote-yea mr-1"></i>
+                        <a [routerLink]="" (click)="reject()">Reject</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

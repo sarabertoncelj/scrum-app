@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RootNamespace>smrpo_be</RootNamespace>
+    <UserSecretsId>4fbfeb20-6309-454b-953a-fdea1fc3171c</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200411172206_UserStoryAddSprintId.cs" />
+    <Compile Remove="Migrations\20200411172206_UserStoryAddSprintId.Designer.cs" />
+    <Compile Remove="Migrations\20200412155547_UserStoryTime.cs" />
+    <Compile Remove="Migrations\20200412155547_UserStoryTime.Designer.cs" />
+    <Compile Remove="Migrations\20200520095235_ProjectPosts.cs" />
+    <Compile Remove="Migrations\20200520095235_ProjectPosts.Designer.cs" />
+    <Compile Remove="Migrations\20200521084640_WorkLog.cs" />
+    <Compile Remove="Migrations\20200521084640_WorkLog.Designer.cs" />
+    <Compile Remove="Migrations\20200523133904_UserProjectRolesTable.cs" />
+    <Compile Remove="Migrations\20200523133904_UserProjectRolesTable.Designer.cs" />
+    <Compile Remove="Migrations\20200523134129_UserProjectRolesTable.cs" />
+    <Compile Remove="Migrations\20200523134129_UserProjectRolesTable.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
+  </ItemGroup>
+
+</Project>

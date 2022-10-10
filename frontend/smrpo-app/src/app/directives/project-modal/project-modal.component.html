@@ -1,0 +1,61 @@
+<form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+    <div class="modal-header ">
+        <h4 *ngIf="!project" class="modal-title">Add new project</h4>
+        <h4 *ngIf="project" class="modal-title">Modify project: {{project.name}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group" *ngIf="users">
+            <label class="col-form-label">Name</label>
+            <input type="text" formControlName="name" class="form-control" maxlength="500" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                <div *ngIf="submitted && f.name.errors.required">Name is required</div>
+            </div>
+
+            <label class="col-form-label">Scrum master</label>
+            <select class="custom-select" formControlName="scrumMaster" [ngClass]="{ 'is-invalid': submitted && f.scrumMaster.errors }">
+                <option [value]="user.id" *ngFor="let user of users">{{user.username}}</option>
+            </select>
+            <div *ngIf="submitted && f.scrumMaster.errors" class="invalid-feedback">
+                <div *ngIf="submitted && f.scrumMaster.errors.required">Scrum master is required</div>
+            </div>
+
+            <label class="col-form-label">Product owner</label>
+            <select class="custom-select" formControlName="productOwner" [ngClass]="{ 'is-invalid': submitted && f.productOwner.errors }">
+                <option [value]="user.id" *ngFor="let user of users">{{user.username}}</option>
+            </select>
+            <div *ngIf="submitted && f.productOwner.errors" class="invalid-feedback">
+                <div *ngIf="submitted && f.productOwner.errors.required">Product owner is required</div>
+            </div>
+
+            <label class="col-form-label">Developers</label>
+            <select class="custom-select" (change)="addDeveloper($event.target.value)">
+                <option value="" selected>Select developers</option>
+                <option [value]="user.id" *ngFor="let user of usersCanAdd">{{user.username}}</option>
+            </select>
+            <div formArrayName="developers" *ngFor="let developer of projectForm.get('developers')['controls']; let i = index;">
+                <div [formGroupName]="i" class="input-group">
+                    <p type="text" class="form-control">{{mapToUsername(developer.value)}}</p>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-dark" (click)="removeDeveloper(i)" type="button"><i class="fas fa-minus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <div class="modal-footer">
+        <button *ngIf="!project" class="btn btn-outline-dark" type="submit">
+            <i *ngIf="!loading" class="fas fa-plus"></i>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Add
+        </button>
+        <button *ngIf="project" class="btn btn-outline-dark" type="submit">
+            <i *ngIf="!loading" class="fas fa-save"></i>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Save
+        </button>
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">
+            <i class="fas fa-times"></i>
+            Cancel
+        </button>
+    </div>
+</form>

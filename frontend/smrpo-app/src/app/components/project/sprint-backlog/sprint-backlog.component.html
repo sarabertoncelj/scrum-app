@@ -1,0 +1,11 @@
+<project-navigation (projectEvent)="setProject($event)" (sprintsEvent)="setSprints($event)"></project-navigation>
+<div *ngIf="project" class="container mt-2 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-12 padding-0" *ngIf="sprints">
+            <user-story [project]="project" [sprints]="sprints" (userStoryRejected)="removeUserStory($event)" [(userStory)]="activeUserStories[i]" [userStoryTasksExpanded]="true" [userStoryTasksShow]="true" *ngFor="let activeUserStory of activeUserStories; let i = index"></user-story>
+            <div *ngIf="!activeUserStories || activeUserStories.length === 0" class="text-muted">
+                No user stories in sprint backlog
+            </div>
+        </div>
+    </div> 
+</div>

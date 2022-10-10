@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29318.209
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "smrpo-be", "smrpo-be\smrpo-be.csproj", "{1806E380-3BBF-4084-8D19-1EB24418A46B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1806E380-3BBF-4084-8D19-1EB24418A46B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1806E380-3BBF-4084-8D19-1EB24418A46B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1806E380-3BBF-4084-8D19-1EB24418A46B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1806E380-3BBF-4084-8D19-1EB24418A46B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4FCAAA95-25D7-4BC8-ACFD-5E100853C39B}
+	EndGlobalSection
+EndGlobal

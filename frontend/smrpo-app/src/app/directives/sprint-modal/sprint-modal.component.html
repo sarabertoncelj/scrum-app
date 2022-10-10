@@ -1,0 +1,51 @@
+<form [formGroup]="sprintForm" (ngSubmit)="onSubmit()">
+    <div class="modal-header ">
+        <h4 *ngIf="!sprint" class="modal-title">Add new sprint</h4>
+        <h4 *ngIf="sprint" class="modal-title">Modify sprint: {{sprint.start | date }}&nbsp;-&nbsp;{{sprint.end | date }}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <div *ngIf="sprint && !sprint.active">
+                <label class="col-form-label">Start date</label>
+                <input type="datetime" formControlName="start" class="form-control" [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" [readonly]="true" [ngClass]="{ 'is-invalid': submitted && f.start.errors}">
+                <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
+                <div *ngIf="submitted && f.start.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.start.errors.required">Start date is required</div>
+                    <div *ngIf="submitted && f.start.errors.inPast">Start date can not be in past</div>
+                </div>
+            </div>
+
+            <div *ngIf="sprint && !sprint.active">
+                <label class="col-form-label">End date</label>
+                <input type="datetime" formControlName="end" class="form-control" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" [readonly]="true" [ngClass]="{ 'is-invalid': submitted && (f.end.errors || sprintForm.errors) }">
+                <owl-date-time [pickerType]="'calendar'" #dt1 ></owl-date-time>
+                <div *ngIf="submitted && (f.end.errors || sprintForm.errors)" class="invalid-feedback">
+                    <div *ngIf="submitted && (f.end.errors && f.end.errors.required)">End date is required</div>
+                    <div *ngIf="submitted && (sprintForm.errors && sprintForm.errors.endBeforeStart)">End date before start date</div>
+                </div>
+            </div>
+
+            <label class="col-form-label">Velocity (h)</label>
+            <input type="number" formControlName="velocity" min="0" max="1000" step="1" data-decimals="0" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.velocity.errors }">
+            <div *ngIf="submitted && f.velocity.errors" class="invalid-feedback">
+                <div *ngIf="submitted && f.velocity.errors.required">Velocity is required</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button *ngIf="!sprint" class="btn btn-outline-dark" type="submit">
+            <i *ngIf="!loading" class="fas fa-plus"></i>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Add
+        </button>
+        <button *ngIf="sprint" class="btn btn-outline-dark" type="submit">
+            <i *ngIf="!loading" class="fas fa-save"></i>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Save
+        </button>
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">
+            <i class="fas fa-times"></i>
+            Cancel
+        </button>
+    </div>
+</form>
